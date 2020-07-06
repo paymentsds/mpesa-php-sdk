@@ -9,10 +9,10 @@ class Constants {
 	const REVERSAL = 'REVERSAL';
 	const QUERY_TRANSACTION_STATUS = 'QUERY_TRANSACTION_STATUS';
 
-	const PHONE_NUMBER = '';
-	const WORD = '';
-	const SERVICE_PROVIDER_CODE = '';
-	const MONEY_AMOUNT = '';
+	const PHONE_NUMBER = '/^((00|\+)?258)?8[45][0-9]{7}$/';
+	const WORD = '/^\w+$/';
+	const SERVICE_PROVIDER_CODE = '/^[0-9]{6}$/';
+	const MONEY_AMOUNT = '/[1-0][0-9]*(\.[0-9]+)?';
 
 	const HTTP = [
 		'GET'  => 'get',

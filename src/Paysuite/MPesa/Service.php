@@ -43,6 +43,17 @@ class Service {
 	}
 
 	private function detectOperation($intent) {
+		
+		if (isset($intent['to'])) {
+			if (preg_match(Constants::$operations[Constants::PHONE_NUMBER], $intent['to'])) {
+				return Constant::B2C_PAYMENT;
+			} 
+			
+			if (preg_match(Constants::$operations[Constants::PHONE_NUMBER], $intent['to'])) {
+				return Constant::B2B_PAYMENT;
+			}
+
+		}
 	}
 
 	private function detectMissingProperties($opcode, $intent) {
