@@ -5,46 +5,51 @@ class Service {
 	private $httpClient;
 	private $config;
 
-	function __construct($config) {
+	public function __construct($config) {
 		$this->config= new Paysuite\MPesa::Configuration($args);	
 	}
 
-	function handleSend($intent) {
+	public function handleSend($intent) {
+		$opcode = $this->detectOperation($intent);
+		return $this->handleRequest($opcode, $intent);
 	}
 
-	function handleReceive($intent) {
+	public function handleReceive($intent) {
+		return handleRequest(Constants::C2B_PAYMENT, $intent);
 	}
 
-	function handleQuery($inent) {
+	public function handleQuery($inent) {
+		return handleRequest(Constants::QUERY_TRANSACTION_STATUS, $intent);
 	}
 
-	function handleRevert($intent) {
+	public function handleRevert($intent) {
+		return handleRequest(Constants::REVERSAL, $intent);
 	}
 
-	function handleRequest($opcode, $inent) {
+	public function handleRequest($opcode, $inent) {
 	}
 
-	function detectOperation($intent) {
+	private function detectOperation($intent) {
 	}
 
-	function detectMissingProperties($opcode, $intent) {
+	private function detectMissingProperties($opcode, $intent) {
 	}
 
-	function detectErrors($opcode, $intent) {
+	private function detectErrors($opcode, $intent) {
 	}
 
-	function fillOptionalProperties($opcode, $intent) {
+	private function fillOptionalProperties($opcode, $intent) {
 	}
 
-	function buildRequestBody($opcode, $intent) {
+	private function buildRequestBody($opcode, $intent) {
 	}
 
-	function buildRequestHeaders($opcode, $indent) {
+	private function buildRequestHeaders($opcode, $indent) {
 	}
 
-	function performRequest($opcode, $intent) {
+	private function performRequest($opcode, $intent) {
 	}
 
-	function generateAccessToken() {
+	private function generateAccessToken() {
 	}
 }
