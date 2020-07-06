@@ -27,6 +27,19 @@ class Service {
 	}
 
 	public function handleRequest($opcode, $inent) {
+		$data = $this->fillOptionalPropertirs($opcode, $intent);
+
+		$missingPProperties = $this->detectMissingProperties($opcode, $intent);
+		if (count($missingProperties) > 0) {
+			// Handle
+		}
+
+		$validationErrors = $this->detectErrors($opcode, $data);
+		if (count($validationErrors) > 0) {
+			// Handle
+		}
+
+		return $this->performRequest($opcode, $intent);
 	}
 
 	private function detectOperation($intent) {
