@@ -43,13 +43,14 @@ class Service {
 	}
 
 	private function detectOperation($intent) {
+		$operation = Constants::$operation[$opcode];
 		
 		if (isset($intent['to'])) {
-			if (preg_match(Constants::$operations[Constants::PHONE_NUMBER], $intent['to'])) {
+			if (preg_match($operation->validation['to'], $intent['to'])) {
 				return Constant::B2C_PAYMENT;
 			} 
 			
-			if (preg_match(Constants::$operations[Constants::PHONE_NUMBER], $intent['to'])) {
+			if (preg_match($operation->validation['to'], $intent['to'])) {
 				return Constant::B2B_PAYMENT;
 			}
 
@@ -57,9 +58,25 @@ class Service {
 	}
 
 	private function detectMissingProperties($opcode, $intent) {
+		$operation = Constants::$operation[$opcode];
+		
+		$requires = $operation->required;
+		$missing = array_filter($requires, function($e) {
+			return !(isset($intent[$e]));
+		});
+		
+		return $missing;
 	}
 
 	private function detectErrors($opcode, $intent) {
+		$operation = Constants::$operation[$opcode];
+		
+		$requires = $operation->required;
+		$errors = array_filter($requires, function($e) {
+			return !preg_match($operation->validation[$e], $intent[$e]);
+		});
+		
+		return $errors;
 	}
 
 	private function fillOptionalProperties($opcode, $intent) {
