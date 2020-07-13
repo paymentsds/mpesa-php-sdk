@@ -46,7 +46,7 @@ class Service {
 			throw new \Exception('Validation errors');
 		}
 
-		return $this->performRequest($opcode, $intent);
+		return $this->performRequest($opcode, $data);
 	}
 
 	private function detectOperation($intent) {
@@ -70,8 +70,6 @@ class Service {
 		$operation = Constants::OPERATIONS[$opcode];
 		
 		$requires = $operation['required'];
-		
-		var_dump($requires);
 		$missing = array_filter($requires, function($v, $k) use ($intent) {		
 			return !(isset($intent[$v]));
 		}, ARRAY_FILTER_USE_BOTH);
@@ -95,14 +93,14 @@ class Service {
 		switch($opcode) {
 			case Constants::C2B_PAYMENT:
 			case Constants::B2B_PAYMENT:
-				foreach (['to' => 'service_provider_code'] as $k => $v) {
+				foreach (['to' => 'serviceProviderCode'] as $k => $v) {
 					if (!isset($intent[$k]) && isset($this->config->{$v})) {
 						$intent[$k] = $this->config->{$v};
 					}
 				}
 				break;
 			case Constants::B2C_PAYMENT:
-                                  foreach (['from' => 'service_provider_code'] as $k => $v) {
+                                  foreach (['from' => 'serviceProviderCode'] as $k => $v) {
                                           if (!isset($intent[$k]) && isset($this->config->{$v})) {
                                                   $intent[$k] = $this->config->{$v};
                                           }
@@ -111,8 +109,8 @@ class Service {
 				break;
 			case Constants::REVERSAL:
 				foreach ([
-					'initiator_identifier' => 'initiator_identifier',
-				 	'security_credential'  => 'security_credential'
+					'initiatorIdentifier' => 'initiatorIdentifier',
+				 	'securityCredential'  => 'securityCredential'
 				] as $k => $v) {
                                           if (!isset($intent[$k]) && isset($this->config->{$v})) {
                                                   $intent[$k] = $this->config->{$v};
@@ -121,7 +119,7 @@ class Service {
 
 				break;
 			case Constants::QUERY_TRANSACTION_STATUS:
-                                foreach (['to' => 'service_provider_code'] as $k => $v) {
+                 foreach (['to' => 'serviceProviderCode'] as $k => $v) {
                                         if (!isset($intent[$k]) && isset($this->config->{$v})) {
                                                 $intent[$k] = $this->config->{$v};
                                         }
@@ -146,9 +144,9 @@ class Service {
 
 	private function buildRequestHeaders($opcode, $indent) {
 		$headers = [
-			'User-Agent' => "",
-			'Origin' => "",
-			'Content-Type' => "",
+			'User-Agent' => $this->config->userAgent,
+			'Origin' => $this->config->origin,
+			'Content-Type' => "application/json",
 			'Authorization' => sprintf("Bearer %s", $this->config->auth)
 		];
 		
@@ -163,7 +161,7 @@ class Service {
 				$operation = Constants::OPERATIONS[$opcode];
 				$headers = $this->buildRequestHeaders($opcode, $intent);
 				$body = $this->buildRequestBody($opcode, $intent);
-				
+								
 				$baseURL = sprintf("%s://%s:%s", $this->config->environment->scheme, $this->config->environment->domain, $operation['port']);
 				
 				$data = [

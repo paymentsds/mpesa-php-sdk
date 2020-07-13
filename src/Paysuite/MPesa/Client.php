@@ -6,22 +6,22 @@ class Client {
 
 	public function __construct($args)
 	{
-		$this->service = new Service($args);
+		return $this->service = new Service($args);
 	}
 
 	public function send($intent) {
-		$this->service->handleSend($intent);
+		return $this->service->handleSend($intent);
 	}
 
 	public function receive($intent) {
-		$this->service->handleReceive($intent);
+		return $this->service->handleReceive($intent);
 	}
 	
 	public function revert($intent) {
-		$this->service->handleRevert($inent);
+		return $this->service->handleRevert($inent);
 	}
 	
 	public function query($intent) {
-		$this->service->handleQuery($intent);
+		return $this->service->handleQuery($intent);
 	}
 }
