@@ -16,7 +16,7 @@ class Environment {
 	public function __construct($scheme, $domain)
 	{
 		$this->scheme = $scheme;
-		$this->domain = $domain;	
+		$this->domain = $domain;
 	}
 	
 	public function __get($property)
@@ -28,9 +28,7 @@ class Environment {
 		return null;
 	}
 	
-	public static function fromURL($url)
+	public static function fromURL()
 	{
-		$parts = explode("://", $url);
-		return new Environment($parts[0], $parts[1]);
 	}
 }
