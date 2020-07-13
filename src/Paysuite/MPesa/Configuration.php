@@ -1,5 +1,6 @@
 <?php
 namespace Paysuite\MPesa;
+
 class Configuration {
 	public const PARAMS = [
 		'apiKey',
@@ -13,19 +14,30 @@ class Configuration {
 		'securityCredential',
 		'serviceProviderCode',
 		'userAgent', 
-		'environment'
+		'environment',
+		'auth'
 	];
 
 	public function __construct(array $args) {
-		$this->environment = 'sandbox';
+		$this->environment = Environment::fromURL(Environment::SANDBOX);
 		$this->debugging = true;
 		$this->verifySSL = false;
 		$this->origin = '*';
 		$this->userAgent = 'MPesa-PHP';
+		$this->timeout = 0;
 
 		foreach (self::PARAMS as $param) {
 			if (!empty($args[$param])) {
-				$this->{$param} = $args[$param];
+				if ($param === 'environment') {
+					if ($args['environment'] == Environment::PRODUCTION) {
+						$this->environment = Environment::fromURL(Environment::PRODUCTION);
+					} else {
+						$this->environment = Environment::fromURL(Environment::SANDBOX);
+					}
+				} else {
+					$this->{$param} = $args[$param];
+				}
+				
 			}
 		}
 	}
@@ -38,5 +50,26 @@ class Configuration {
 
 	public function __get($property) {
 		return $this->{$property};
+	}
+
+	public function generateAccessToken() {
+		$hasKeys = isset($this->apiKey) && isset($this->publicKey);
+		$hasAccessToken = isset($this->accessToken);
+
+		if ($hasKeys) {
+			$publicKey = openssl_get_publickey($this->formatPublicKey());
+
+			openssl_public_encrypt($this->apiKey, $accessToken, $publicKey, OPENSSL_PKCS1_PADDING);
+			
+			$this->auth = base64_encode($accessToken);
+		}
+
+		if ($hasAccessToken) {
+			$this->auth = $this->accessToken;
+		}
+	}
+
+	private function formatPublicKey() {
+		return "-----BEGIN PUBLIC KEY-----\n$this->publicKey\n-----END PUBLIC KEY-----";
 	}
 }
