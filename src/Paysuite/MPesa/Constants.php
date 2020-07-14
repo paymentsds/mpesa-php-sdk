@@ -9,22 +9,19 @@ class Constants {
 	const REVERSAL = 'REVERSAL';
 	const QUERY_TRANSACTION_STATUS = 'QUERY_TRANSACTION_STATUS';
 
-	const PHONE_NUMBER = '/^((00|\+)?258)?8[45][0-9]{7}$/';
-	const WORD = '/^\w+$/';
-	const SERVICE_PROVIDER_CODE = '/^[0-9]{6}$/';
-	const MONEY_AMOUNT = '/[1-0][0-9]*(\.[0-9]+)?';
+	const C2B_PAYMENT_PORT = '18345';
+	const B2B_PAYMENT_PORT = '18349';
+	const B2C_PAYMENT_PORT = '18345';
+	const REVERSAL_PORT = '18354';
+	const QUERY_TRANSACTION_STATUS_PORT = '18353';
 
-	const C2B_PAYMENT_PORT = '';
-	const B2B_PAYMENT_PORT = '';
-	const B2C_PAYMENT_PORT = '';
-	const REVERSAL_PORT = '';
-	const QUERY_TRANSACTION_STATUS_PORT = '';
-
+	const POST = 'post';
+	const GET = 'get';
 
 	const OPERATIONS = [
 		self::C2B_PAYMENT => [
-			'method' => 'post',
-			'port'   => '18345',
+			'method' => self::POST,
+			'port'   => self::C2B_PAYMENT_PORT,
 			'path'   => '/ipg/v1x/b2cPayment/',
 			'mapping' => [
 				'to' => self::PATTERNS['SERVICE_PROVIDER_CODE'],
@@ -52,8 +49,8 @@ class Constants {
 		],
 
 		self::B2B_PAYMENT => [
-			'method' => 'post',
-			'port'   => '18349',
+			'method' => self::POST,
+			'port'   => self::B2B_PAYMENT_PORT,
 			'path'   => '/ipg/v1x/b2bPayment/',
 			'mapping' => [
 				'to' => self::PATTERNS['SERVICE_PROVIDER_CODE'],
@@ -82,8 +79,8 @@ class Constants {
 		],
 
 		self::B2C_PAYMENT => [
-			'method' => 'post',
-			'port'   => '18345',
+			'method' => self::POST,
+			'port'   => self::B2C_PAYMENT_PORT,
 			'path'   => '/ipg/v1x/b2cPayment/',
 			'mapping' => [
 				'to' => 'input_CustomerMSISDN',
@@ -112,8 +109,8 @@ class Constants {
 		],
 
 		self::REVERSAL => [
-			'method' => 'post',
-			'port'   => '18354',
+			'method' => self::POST,
+			'port'   => self::REVERSAL_PORT,
 			'path'   => '/ipg/v1x/reversal/',
 			'mapping' => [
 				'to' => 'input_ServiceProviderCode',
@@ -147,8 +144,8 @@ class Constants {
 		],
 
 		self::QUERY_TRANSACTION_STATUS => [
-			'method' => 'get',
-			'port'   => '18353',
+			'method' => self::GET,
+			'port'   => self::QUERY_TRANSACTION_STATUS_PORT,
 			'path'   => '/ipg/v1x/queryTransactionStatus/',
 			'mapping' => [
 				'from' => 'input_ServiceProviderCode',

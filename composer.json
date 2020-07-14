@@ -15,16 +15,16 @@
         "guzzlehttp/guzzle": "^7.1@dev"
     },
     "autoload": {
-    	"psr-4": {
-		"Paysuite\\MPesa\\": "src"
-	},
-	"files": [
-		"src/Paysuite/MPesa/Environment.php",
-		"src/Paysuite/MPesa/Operation.php",
-		"src/Paysuite/MPesa/Constants.php",
-		"src/Paysuite/MPesa/Configuration.php",
-		"src/Paysuite/MPesa/Service.php",
-		"src/Paysuite/MPesa/Client.php"
-	]
+            "psr-4": {
+            "Paysuite\\MPesa\\": "src"
+        },
+        "files": [
+            "src/Paysuite/MPesa/Environment.php",
+            "src/Paysuite/MPesa/Operation.php",
+            "src/Paysuite/MPesa/Constants.php",
+            "src/Paysuite/MPesa/Configuration.php",
+            "src/Paysuite/MPesa/Service.php",
+            "src/Paysuite/MPesa/Client.php"
+        ]
     }
 }

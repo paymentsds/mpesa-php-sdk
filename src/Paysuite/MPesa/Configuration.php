@@ -36,8 +36,7 @@ class Configuration {
 					}
 				} else {
 					$this->{$param} = $args[$param];
-				}
-				
+				}	
 			}
 		}
 	}
