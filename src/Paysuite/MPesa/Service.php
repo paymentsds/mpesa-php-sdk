@@ -3,15 +3,18 @@ namespace Paysuite\MPesa;
 
 use Paysuite\MPesa\Configuration;
 
-class Service {
+class Service
+{
     private $httpClient;
     private $config;
 
-    public function __construct($args) {
-        $this->config = new Configuration($args);	
+    public function __construct($args)
+    {
+        $this->config = new Configuration($args);
     }
 
-    public function handleSend($intent) {
+    public function handleSend($intent)
+    {
         $opcode = $this->detectOperation($intent);
 
         if ($opcode == null) {
@@ -21,19 +24,23 @@ class Service {
         return $this->handleRequest($opcode, $intent);
     }
 
-    public function handleReceive($intent) {
+    public function handleReceive($intent)
+    {
         return handleRequest(Constants::C2B_PAYMENT, $intent);
     }
 
-    public function handleQuery($inent) {
+    public function handleQuery($inent)
+    {
         return handleRequest(Constants::QUERY_TRANSACTION_STATUS, $intent);
     }
 
-    public function handleRevert($intent) {
+    public function handleRevert($intent)
+    {
         return handleRequest(Constants::REVERSAL, $intent);
     }
 
-    public function handleRequest($opcode, $intent) {
+    public function handleRequest($opcode, $intent)
+    {
         $data = $this->fillOptionalProperties($opcode, $intent);
         
         $missingProperties = $this->detectMissingProperties($opcode, $data);
@@ -49,8 +56,8 @@ class Service {
         return $this->performRequest($opcode, $data);
     }
 
-    private function detectOperation($intent) {
-
+    private function detectOperation($intent)
+    {
         if (isset($intent['to'])) {
             if (preg_match(Constants::PATTERNS['PHONE_NUMBER'], $intent['to'])) {
                 return Constants::B2C_PAYMENT;
@@ -59,38 +66,38 @@ class Service {
             if (preg_match(Constants::PATTERNS['SERVICE_PROVIDER_CODE'], $intent['to'])) {
                 return Constants::B2B_PAYMENT;
             }
-
         }
 
         throw new \Exception('Invalid operation');
     }
 
-    private function detectMissingProperties($opcode, $intent) {
-
+    private function detectMissingProperties($opcode, $intent)
+    {
         $operation = Constants::OPERATIONS[$opcode];
         
         $requires = $operation['required'];
-        $missing = array_filter($requires, function($v, $k) use ($intent) {		
+        $missing = array_filter($requires, function ($v, $k) use ($intent) {
             return !(isset($intent[$v]));
         }, ARRAY_FILTER_USE_BOTH);
         
         return $missing;
     }
 
-    private function detectErrors($opcode, $intent) {
-
+    private function detectErrors($opcode, $intent)
+    {
         $operation = Constants::OPERATIONS[$opcode];
                 
         $requires = $operation['required'];
-        $errors = array_filter($requires, function($v, $k) use ($intent, $operation) {
+        $errors = array_filter($requires, function ($v, $k) use ($intent, $operation) {
             return !preg_match($operation['validation'][$v], $intent[$v]);
         }, ARRAY_FILTER_USE_BOTH);
         
         return $errors;
     }
 
-    private function fillOptionalProperties($opcode, $intent) {
-        switch($opcode) {
+    private function fillOptionalProperties($opcode, $intent)
+    {
+        switch ($opcode) {
             case Constants::C2B_PAYMENT:
             case Constants::B2B_PAYMENT:
                 foreach (['to' => 'serviceProviderCode'] as $k => $v) {
@@ -99,42 +106,44 @@ class Service {
                     }
                 }
                 break;
+                
             case Constants::B2C_PAYMENT:
-                                  foreach (['from' => 'serviceProviderCode'] as $k => $v) {
-                                          if (!isset($intent[$k]) && isset($this->config->{$v})) {
-                                                  $intent[$k] = $this->config->{$v};
-                                          }
-                                  }
-
+                foreach (['from' => 'serviceProviderCode'] as $k => $v) {
+                    if (!isset($intent[$k]) && isset($this->config->{$v})) {
+                        $intent[$k] = $this->config->{$v};
+                    }
+                }
                 break;
+
             case Constants::REVERSAL:
                 foreach ([
                     'initiatorIdentifier' => 'initiatorIdentifier',
                      'securityCredential'  => 'securityCredential'
                 ] as $k => $v) {
-                                          if (!isset($intent[$k]) && isset($this->config->{$v})) {
-                                                  $intent[$k] = $this->config->{$v};
-                                          }
-                                }
-
+                    if (!isset($intent[$k]) && isset($this->config->{$v})) {
+                        $intent[$k] = $this->config->{$v};
+                    }
+                }
                 break;
+
             case Constants::QUERY_TRANSACTION_STATUS:
-                 foreach (['to' => 'serviceProviderCode'] as $k => $v) {
-                                        if (!isset($intent[$k]) && isset($this->config->{$v})) {
-                                                $intent[$k] = $this->config->{$v};
-                                        }
-                                }
+                foreach (['to' => 'serviceProviderCode'] as $k => $v) {
+                    if (!isset($intent[$k]) && isset($this->config->{$v})) {
+                        $intent[$k] = $this->config->{$v};
+                    }
+                }
                 break;
         }
 
         return $intent;
     }
 
-    private function buildRequestBody($opcode, $intent) {
+    private function buildRequestBody($opcode, $intent)
+    {
         $operation = Constants::OPERATIONS[$opcode];
         $body = [];
         
-        foreach($intent as $oldKey => $value) {
+        foreach ($intent as $oldKey => $value) {
             $newKey = $operation['mapping'][$oldKey];
             $body[$newKey] = $value;
         }
@@ -142,7 +151,8 @@ class Service {
         return $body;
     }
 
-    private function buildRequestHeaders($opcode, $indent) {
+    private function buildRequestHeaders($opcode, $indent)
+    {
         $headers = [
             'User-Agent' => $this->config->userAgent,
             'Origin' => $this->config->origin,
@@ -153,7 +163,8 @@ class Service {
         return $headers;
     }
 
-    private function performRequest($opcode, $intent) {
+    private function performRequest($opcode, $intent)
+    {
         $this->generateAccessToken();
         
         if (isset($this->config->environment)) {
@@ -186,13 +197,13 @@ class Service {
             } else {
                 throw new \Exception('No auth data');
             }
-        
         } else {
             throw new \Exception('Invalid connection settings');
         }
     }
 
-    private function generateAccessToken() {
+    private function generateAccessToken()
+    {
         $this->config->generateAccessToken();
     }
 }
