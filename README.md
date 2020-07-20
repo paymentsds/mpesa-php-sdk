@@ -1,4 +1,4 @@
-# MPesa PHP SDK
+# MPesa SDK for PHP
 
 MPesa PHP SDK is an unofficial library to help developers integrating every [MPesa](https://developer.mpesa.vm.co.mz) operations to their PHP applications.
 
