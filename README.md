@@ -1,22 +1,33 @@
-# MPesa SDK for PHP
+# M-Pesa SDK for PHP
 
-MPesa PHP SDK is an unofficial library to help developers integrating every [MPesa](https://developer.mpesa.vm.co.mz) operations to their PHP applications.
+M-Pesa SDK for PHP is an unofficial library aiming to help develbusinesses integrating every [M-Pesa](https://developer.mpesa.vm.co.mz) operations to their PHP applications.
 
 ## Contents
 
 1. [Features](#features)
-1. [Requirements](#requirements)
-1. [Configuration](#configuration)
 1. [Usage](#usage)
-   1. [Quickstart](#contributing)
-   1. [Examples](#contributing)
+   1. [Quickstart](#usage/scenario-1)
+   1. [Receive Money from a Mobile Account](#usage/scenario-1)
+   1. [Send Money to a Mobile Account](#usage/scenario-2)
+   1. [Send Money to a Business Account](#usage/scenario-3)
+   1. [Revert a Transaction](#usage/scenario-4)
+   1. [Query the Status of a Transaction](#usage/scenario-5)
+   1. [Examples](#usage/scenario-6)
+1. [Prerequisites](#prerequisites)
 1. [Installation](#installation)
-   1. [Using Rubygems](#installation-composer)
-   1. [Manual Installation](#installation-manual)
-1. [Related Projects](#related)
-   1. [Dependencies](#contributing)
-   1. [Friends](#contributing)
-   1. [Alternatives](#contributing)
+   1. [Installation Scenario 1](#installation/scenario-1)
+   1. [Installation Scenario 2](#installation/scenario-2)
+   1. [Installation Scenario 3](#installation/scenario-3)
+   1. [Installation Scenario 4](#installation/scenario-4)
+1. [Configuration](#configuration)
+   1. [Configuration Scenario 1](#configuration/scenario-1)
+   1. [Configuration Scenario 2](#configuration/scenario-2)
+   1. [Configuration Scenario 3](#configuration/scenario-3)
+   1. [Configuration Scenario 4](#configuration/scenario-4)
+1. [Related Projects](#related-projects)
+   1. [Dependencies](#related-projects/dependencies)
+   1. [Friends](#related-projects/friends)
+   1. [Alternatives](#related-projects/alternatives)
 1. [Contributing](#contributing)
 1. [Changelog](#changelog)
 1. [Authors](#authors)
@@ -24,262 +35,88 @@ MPesa PHP SDK is an unofficial library to help developers integrating every [MPe
 1. [License](#license)
 
 ## Features <a name="features"></a>
-- Receive money from a mobile account to a business account (C2B)
-- Send money from a business account to a mobile account (B2C)
-- Send money from a business account to a another business account (B2B)
-- Revert a transaction (Reversal)
-- Query the status of a transaction (Query transaction status)
 
-## Requirements <a name="requirements"></a>
-
-- [PHP](https://php.net)
-- [Composer](https://getcomposer.org)
+- Receive money from a mobile account to a business account
+- Send money from a business account to a mobile account
+- Send money from a business account to a another business account
+- Revert a transaction
+- Query the status of a transaction
 
 ## Usage <a name="usage"></a>
-### Quickstart <a name="usage-quickstart"></a>
-```php
-use Paysuite\MPesa\Client;
 
-client = new Client([
-    'apiKey' => '<REPLACE>',
-    'publicKey' => '<REPLACE>',
-    'serviceProviderCode' => '<REPLACE>',
-]);
+### Quickstart <a name="#usage/scenario-1"></a>
 
-form = [
-    'from' => '84XXXXXX',
-    'amount' => '10',
-    'transaction' => 'TX',
-    'reference' => 'REF'
-]
+### Receive Money from a Mobile Account <a name="#usage/scenario-2"></a>
 
-result = client.receive(form)
+### Send Money to a Mobile Account <a name="#usage/scenario-3"></a>
 
-if (result.isSuccess()) {
-    echo json_encode(result.data);
-} else {
-    echo json_encode(result.data);
-}
-```
+### Send Money to a Business Account <a name="#usage/scenario-4"></a>
 
-### Receive money from a mobile wallet
+### Revert a Transaction <a name="#usage/scenario-5"></a>
 
-```PHP
-use Paysuite\MPesa\Client;
+### Query the Status of a Transaction <a name="#usage/scenario-6"></a>
 
-client = new Client([
-    'apiKey' => '<REPLACE>',
-    'publicKey' => '<REPLACE>',
-    'serviceProviderCode' => '<REPLACE>',
-]);
+### Examples <a name="usage/scenario-7"></a>
 
-form = [
-    'from' => '84XXXXXX',
-    'amount' => '10',
-    'transaction' => 'TX',
-    'reference' => 'REF'
-]
-
-client.receive(form)
-```
-
-### Send money to a mobile wallet
-
-```php
-use Paysuite\MPesa\Client;
-
-client = new Client([
-    'apiKey' => '<REPLACE>',
-    'publicKey' => '<REPLACE>',
-    'serviceProviderCode' => '<REPLACE>',
-]);
-
-form = [
-    'from' => '84XXXXXX',
-    'amount' => '10',
-    'transaction' => 'TX',
-    'reference' => 'REF'
-]
-
-client.receive(form)
-```
-
-### Send money to a business wallet
-
-```php
-use Paysuite\MPesa\Client;
-
-client = new Client([
-    'apiKey' => '<REPLACE>',
-    'publicKey' => '<REPLACE>',
-    'serviceProviderCode' => '<REPLACE>',
-]);
-
-form = [
-    'from' => '84XXXXXX',
-    'amount' => '10',
-    'transaction' => 'TX',
-    'reference' => 'REF'
-]
-
-client.receive(form)
-```
-
-### Revert a transaction
-
-```php
-use Paysuite\MPesa\Client;
-
-client = new Client([
-    'apiKey' => '<REPLACE>',
-    'publicKey' => '<REPLACE>',
-    'serviceProviderCode' => '<REPLACE>',
-]);
-
-form = [
-    'from' => '84XXXXXX',
-    'amount' => '10',
-    'transaction' => 'TX',
-    'reference' => 'REF'
-]
-
-client.receive(form)
-```
-
-### Query the status of a transaction
-
-```php
-use Paysuite\MPesa\Client;
-
-client = new Client([
-    'apiKey' => '<REPLACE>',
-    'publicKey' => '<REPLACE>',
-    'serviceProviderCode' => '<REPLACE>',
-]);
-
-form = [
-    'from' => '84XXXXXX',
-    'amount' => '10',
-    'transaction' => 'TX',
-    'reference' => 'REF'
-]
-
-client.receive(form)
-```
-
-### Examples <a name="usage-examples"></a>
-- [Make C2B transaction](examples/c2b_payment.php)
-- [Make B2C transaction](examples/b2c_payment.php)
-- [Make B2B transaction](examples/b2b_payment.php)
-- [Revert a transaction](examples/reversal.php)
-- [Query transaction status](examples/query_transaction_status.php)
+## Prerequisites <a name="prerequisites"></a>
 
 ## Installation <a name="installation"></a>
-### Using Rubygems <a name="installation-rubygems"></a>
-```bash
-$ composer require paysuite-mpesa
-```
 
-### Using Bundler <a name="installation-rubygems"></a>
-```json
-{
-	"require": {
-    	"paysuite/mpesa": "*"
-	}
-}
-```
+### Installation Scenario 1 <a name="installation/scenario-1"></a>
 
-```bash
-$ composer install
-```
+### Installation Scenario 2 <a name="installation/scenario-2"></a>
 
-### Manual Installation <a name="installation-manual"></a>
-```bash
-$ git clone https://github.com/paysuite/mpesa-ruby-sdk.git
-$ cd mpesa-js-sdk
-$ composer install
-```
+### Installation Scenario 3 <a name="installation/scenario-3"></a>
 
 ## Configuration <a name="configuration"></a>
-The complete set of configurations looks like this:
 
-```php
-use Paysuite\MPesa\Client;
+### Configuration Scenario 1 <a name="configuration/scenario-1"></a>
 
-client = new Client([
-    'apiKey' => '<REPLACE>',
-    'publicKey' => '<REPLACE>',
-    'serviceProviderCode' => '<REPLACE>',
-]);
+### Configuration Scenario 2 <a name="configuration/scenario-2"></a>
 
-form = [
-    'from' => '84XXXXXX',
-    'amount' => '10',
-    'transaction' => 'TX',
-    'reference' => 'REF'
-]
+### Configuration Scenario 3 <a name="configuration/scenario-3"></a>
 
-client.receive(form)
-```
+## Related Projects <a name="related-projects"></a>
 
-The minimal configuration is:
-```php
-use Paysuite\MPesa\Client;
+### Dependencies <a name="related-projects/dependencies"></a>
 
-client = new Client([
-    'apiKey' => '<REPLACE>',
-    'publicKey' => '<REPLACE>',
-    'serviceProviderCode' => '<REPLACE>',
-]);
+#### Production Dependencies
 
-form = [
-    'from' => '84XXXXXX',
-    'amount' => '10',
-    'transaction' => 'TX',
-    'reference' => 'REF'
-]
+- [Dependency 1](https://github.com/<username>/<project>)
+- [Dependency 2](https://github.com/<username>/<project>)
+- [Dependency 3](https://github.com/<username>/<project>)
+- [Dependency 4](https://github.com/<username>/<project>)
 
-client.receive(form)
-```
+#### Development Dependencies
 
-Or if you have pre-calculated the access token offline:
+- [Dependency 1](https://github.com/<username>/<project>)
+- [Dependency 2](https://github.com/<username>/<project>)
+- [Dependency 3](https://github.com/<username>/<project>)
+- [Dependency 4](https://github.com/<username>/<project>)
 
-```php
-use Paysuite\MPesa\Client;
+### Friends <a name="related-projects/friends"></a>
 
-client = new Client([
-    'apiKey' => '<REPLACE>',
-    'publicKey' => '<REPLACE>',
-    'serviceProviderCode' => '<REPLACE>',
-]);
+- [M-Pesa SDK for Javascript](https://github.com/paymentsds/mpesa-js-sdk)
+- [M-Pesa SDK for PHP](https://github.com/paymentsds/mpesa-php-sdk)
+- [M-Pesa SDK for Ruby](https://github.com/paymentsds/mpesa-ruby-sdk)
+- [M-Pesa SDK for Python](https://github.com/paymentsds/mpesa-python-sdk)
 
-form = [
-    'from' => '84XXXXXX',
-    'amount' => '10',
-    'transaction' => 'TX',
-    'reference' => 'REF'
-]
+### Alternatives <a name="related-projects/alternatives"></a>
 
-client.receive(form)
-```
+- [Alternative 1](https://github.com/<username>/<project>)
+- [Alternative 2](https://github.com/<username>/<project>)
+- [Alternative 3](https://github.com/<username>/<project>)
+- [Alternative 4](https://github.com/<username>/<project>)
 
-## Related Projects <a name="related"></a>
-
-### Dependencies <a name="related-dependencies"></a>
-- [GuzzleHTTP](https://github.com/lostisland/faraday)
-
-### Friends <a name="related-friends"></a>
-TODO: 
-
-### Alternatives <a name="related-alternatives"></a>
-TODO: 
 
 ### Inspiration
+
 - [rosariopfernandes/mpesa-node-api](https://github.com/abdulmueid/mpesa-php-api)
 - [karson/mpesa-php-sdk](https://github.com/karson/mpesa-php-sdk)
 - [codeonweekends/mpesa-php-sdk](https://github.com/codeonweekends/mpesa-php-sdk)
 - [abdulmueid/mpesa-php-api](https://github.com/abdulmueid/mpesa-php-api)
 - [realdm/mpesasdk](https://github.com/realdm/mpesasdk)
+
 
 ## Contributing <a name="contributing"></a>
 
