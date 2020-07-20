@@ -1,6 +1,6 @@
 # MPesa PHP SDK
 
-PHP client for the [Vodacom M-Pesa API](https://developers.mpesa.vm.co.mz).
+MPesa PHP SDK is an unofficial library to help developers integrating every [MPesa](https://developer.mpesa.vm.co.mz) operations to their PHP applications.
 
 ## Contents
 
