@@ -48,6 +48,33 @@ M-Pesa SDK for PHP is an unofficial library aiming to help develbusinesses integ
 
 ### Receive Money from a Mobile Account <a name="#usage/scenario-2"></a>
 
+```php
+use Paymentsds\MPesa\Client;
+
+$client = new Client([
+   'apiKey' => '<REPLACE>',             // API Key
+   'publicKey' => '<REPLACE>',          // Public Key
+   'serviceProviderCode' => '<REPLACE>' // input_ServiceProviderCode
+]);
+
+try {
+   $paymentData = [
+      'from' => '841234567',       // input_CustomerMSISDN
+      'reference' => '11114',      // input_ThirdPartyReference
+      'transaction' => 'T12344CC', // input_TransactionReference
+      'amount' => '10'             // input_Amount
+   ];
+
+   $result = $client.send($paymentData);
+
+   if ($result.isSuccess()) {
+      var_dump($result);
+   }
+} catch (e) {
+   var_dump($e);
+}
+```
+
 ### Send Money to a Mobile Account <a name="#usage/scenario-3"></a>
 
 ### Send Money to a Business Account <a name="#usage/scenario-4"></a>
