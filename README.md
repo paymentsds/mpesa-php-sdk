@@ -65,7 +65,7 @@ try {
       'amount' => '10'             // input_Amount
    ];
 
-   $result = $client.send($paymentData);
+   $result = $client.receive($paymentData);
 
    if ($result.isSuccess()) {
       var_dump($result);
