@@ -88,7 +88,7 @@ $client = new Client([
 
 try {
    $paymentData = [
-      'to' => '841234567',       // input_CustomerMSISDN
+      'to' => '841234567',         // input_CustomerMSISDN
       'reference' => '11114',      // input_ThirdPartyReference
       'transaction' => 'T12344CC', // input_TransactionReference
       'amount' => '10'             // input_Amount
