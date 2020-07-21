@@ -99,7 +99,7 @@ try {
    if ($result.isSuccess()) {
       var_dump($result);
    }
-} catch (e) {
+} catch ($e) {
    var_dump($e);
 }
 ```
