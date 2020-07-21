@@ -106,6 +106,33 @@ try {
 
 ### Send Money to a Business Account <a name="#usage/scenario-4"></a>
 
+```php
+use Paymentsds\MPesa\Client;
+
+$client = new Client([
+   'apiKey' => '<REPLACE>',             // API Key
+   'publicKey' => '<REPLACE>',          // Public Key
+   'serviceProviderCode' => '<REPLACE>' // input_ServiceProviderCode
+]);
+
+try {
+   $paymentData = [
+      'to' => '979797',         // input_ReceiverPartyCode
+      'reference' => '11114',      // input_ThirdPartyReference
+      'transaction' => 'T12344CC', // input_TransactionReference
+      'amount' => '10'             // input_Amount
+   ];
+
+   $result = $client.send($paymentData);
+
+   if ($result.isSuccess()) {
+      var_dump($result);
+   }
+} catch ($e) {
+   var_dump($e);
+}
+```
+
 ### Revert a Transaction <a name="#usage/scenario-5"></a>
 
 ### Query the Status of a Transaction <a name="#usage/scenario-6"></a>
