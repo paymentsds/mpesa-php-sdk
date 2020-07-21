@@ -1,5 +1,5 @@
 {
-    "name": "paysuite/mpesa",
+    "name": "paymentsds/mpesa",
     "description": "PHP client library for MPesa API",
     "type": "library",
     "license": "Apache-2.0",
@@ -11,7 +11,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-	"php": ">= 5.3.0",
+	    "php": ">= 5.3.0",
         "guzzlehttp/guzzle": "^7.1@dev"
     },
     "autoload": {
@@ -19,12 +19,12 @@
             "Paysuite\\MPesa\\": "src"
         },
         "files": [
-            "src/Paysuite/MPesa/Environment.php",
-            "src/Paysuite/MPesa/Operation.php",
-            "src/Paysuite/MPesa/Constants.php",
-            "src/Paysuite/MPesa/Configuration.php",
-            "src/Paysuite/MPesa/Service.php",
-            "src/Paysuite/MPesa/Client.php"
+            "src/Paymentsds/MPesa/Environment.php",
+            "src/Paymentsds/MPesa/Operation.php",
+            "src/Paymentsds/MPesa/Constants.php",
+            "src/Paymentsds/MPesa/Configuration.php",
+            "src/Paymentsds/MPesa/Service.php",
+            "src/Paymentsds/MPesa/Client.php"
         ]
     }
 }
