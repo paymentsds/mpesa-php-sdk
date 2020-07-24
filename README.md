@@ -135,6 +135,34 @@ try {
 
 ### Revert a Transaction <a name="#usage/scenario-5"></a>
 
+```php
+use Paymentsds\MPesa\Client;
+
+$client = new Client([
+   'apiKey' => '<REPLACE>',             // API Key
+   'publicKey' => '<REPLACE>',          // Public Key
+   'serviceProviderCode' => '<REPLACE>', // input_ServiceProviderCode
+   'initiatorIdentifier' => '<REPLACE>', // input_InitiatorIdentifier,
+   'securityIdentifier' => '<REPLACE>'  // input_SecurityCredential
+]);
+
+try {
+   $paymentData = [
+      'reference' => '11114',      // input_ThirdPartyReference
+      'transaction' => 'T12344CC', // input_TransactionReference
+      'amount' => '10'             // input_Amount
+   ];
+
+   $result = $client.revert($paymentData);
+
+   if ($result.isSuccess()) {
+      var_dump($result);
+   }
+} catch ($e) {
+   var_dump($e);
+}
+```
+
 ### Query the Status of a Transaction <a name="#usage/scenario-6"></a>
 
 ### Examples <a name="usage/scenario-7"></a>
