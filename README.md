@@ -15,7 +15,7 @@ M-Pesa SDK for PHP is an unofficial library aiming to help develbusinesses integ
    1. [Examples](#usage/scenario-6)
 1. [Prerequisites](#prerequisites)
 1. [Installation](#installation)
-   1. [Installation Scenario 1](#installation/scenario-1)
+   1. [Using Composer](#installation/scenario-1)
    1. [Installation Scenario 2](#installation/scenario-2)
    1. [Installation Scenario 3](#installation/scenario-3)
    1. [Installation Scenario 4](#installation/scenario-4)
@@ -174,7 +174,11 @@ try {
 
 ## Installation <a name="installation"></a>
 
-### Installation Scenario 1 <a name="installation/scenario-1"></a>
+### Using Composer <a name="installation/scenario-1"></a>
+
+```bash
+composer require paymentsds/mpesa
+```
 
 ### Installation Scenario 2 <a name="installation/scenario-2"></a>
 
