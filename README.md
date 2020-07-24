@@ -169,6 +169,9 @@ try {
 
 ## Prerequisites <a name="prerequisites"></a>
 
+- [PHP 7.2+](https://www.php.net)
+- [Composer](https://getcomposer.org)
+
 ## Installation <a name="installation"></a>
 
 ### Installation Scenario 1 <a name="installation/scenario-1"></a>
