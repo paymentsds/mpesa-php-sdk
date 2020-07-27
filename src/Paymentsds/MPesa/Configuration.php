@@ -16,7 +16,8 @@ class Configuration
         'serviceProviderCode',
         'userAgent',
         'environment',
-        'auth'
+        'auth',
+        'host'
     ];
 
     public function __construct(array $args)
@@ -30,14 +31,18 @@ class Configuration
 
         foreach (self::PARAMS as $param) {
             if (!empty($args[$param])) {
-                if ($param === 'environment') {
+                switch ($param) {
+                case 'environment':
                     if ($args['environment'] == Environment::PRODUCTION) {
                         $this->environment = Environment::fromURL(Environment::PRODUCTION);
-                    } else {
-                        $this->environment = Environment::fromURL(Environment::SANDBOX);
-                    }
-                } else {
-                    $this->{$param} = $args[$param];
+                    } 
+
+                    break;
+                case 'host':
+                    $this->environment = Environment::fromURL($args[$param]);
+                    break;
+                default:
+                    $this->{$param} = $args[$param];    
                 }
             }
         }
