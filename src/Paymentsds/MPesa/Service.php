@@ -1,7 +1,16 @@
 <?php
 namespace Paymentsds\MPesa;
 
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
+
 use Paymentsds\MPesa\Configuration;
+use Paymentsds\MPesa\Exception\AuthenticationExcception;
+use Paymentsds\MPesa\Exception\InvalidHostException;
+use Paymentsds\MPesa\Exception\MissingPropertiesException;
+use Paymentsds\MPesa\Exception\TimeoutException;
+use Paymentsds\MPesa\ErrorType;
+use Paymentsds\MPesa\Response;
 
 class Service
 {
@@ -14,14 +23,14 @@ class Service
     }
 
     public function handleSend($intent)
-    {
-        $opcode = $this->detectOperation($intent);
+    {   
+        try {
+            $opcode = $this->detectOperation($intent);
 
-        if ($opcode == null) {
-            // Handle error
+            return $this->handleRequest($opcode, $intent);    
+        } catch (InvalidReceiverException $e) {
+            return new Response(false, ErrorType::INVALID_RECEIVER);
         }
-
-        return $this->handleRequest($opcode, $intent);
     }
 
     public function handleReceive($intent)
@@ -41,19 +50,28 @@ class Service
 
     public function handleRequest($opcode, $intent)
     {
-        $data = $this->fillOptionalProperties($opcode, $intent);
-        
-        $missingProperties = $this->detectMissingProperties($opcode, $data);
-        if (count($missingProperties) > 0) {
-            throw new \Exception('Missing properties');
+        try {
+            $data = $this->fillOptionalProperties($opcode, $intent);
+    
+            $missingProperties = $this->detectMissingProperties($opcode, $data);
+            if (count($missingProperties) > 0) {
+                throw new MissingPropertiesException('Missing properties');
+            }
+
+            $validationErrors = $this->detectErrors($opcode, $data);
+            if (count($validationErrors) > 0) {
+                throw new ValidationException('Validation errors');
+            }
+
+            return $this->performRequest($opcode, $data);
+        } catch (MissingPropertiesException $e) {
+
+        } catch (ValidationException $e) {
+
+        } catch (TimeoutException $e) {
+
         }
 
-        $validationErrors = $this->detectErrors($opcode, $data);
-        if (count($validationErrors) > 0) {
-            throw new \Exception('Validation errors');
-        }
-
-        return $this->performRequest($opcode, $data);
     }
 
     private function detectOperation($intent)
@@ -68,7 +86,7 @@ class Service
             }
         }
 
-        throw new \Exception('Invalid operation');
+        throw new InvalidReceiverException('Invalid operation');
     }
 
     private function detectMissingProperties($opcode, $intent)
@@ -191,14 +209,29 @@ class Service
                     'timeout'  => $this->config->timeout,
                 ]);
                 
-                $result = $httpClient->request(strtoupper($operation['method']), $operation['path'], $data);
-                
-                return $result;
+                try {
+                    $response = $httpClient->request(strtoupper($operation['method']), $operation['path'], $data);
+                    $body = json_decode($response->getBody()->getContents(), true);
+
+                    
+                    return new Response(true, null, $this->buildResponse($body));
+                } catch (ConnectionException $e) {
+ 
+                } catch (ClientException | ServerException $e)  {
+                    $response = $e->getResponse();
+                    $body = json_decode($response->getBody()->getContents(), true);
+
+                    $errorType = $this->detectErrorType($body['output_ResponseCode']);
+
+                    return new Response(false, $errorType, $this->buildResponse($body));
+                } catch (Exception $e) {
+                    return new Response(false, null, null);
+                }      
             } else {
-                throw new \Exception('No auth data');
+                throw new AuthenticationException('No auth data');
             }
         } else {
-            throw new \Exception('Invalid connection settings');
+            throw new InvalidHostException('Invalid connection settings');
         }
     }
 
@@ -207,9 +240,64 @@ class Service
         $this->config->generateAccessToken();
     }
 
-    private function buildResponse($response) {
-        $
-        $data = json_encode($response->getBody()->getContents());
+    private function buildResponse($body)
+    {
 
+        $mapping = [
+            'output_ConversationID' => 'conversation',
+            'output_ResponseDesc' => 'code',
+            'output_ResponseCode' => 'description',
+            'output_ThirdPartyReference' => 'reference',
+            'output_ResponseTransactionStatus' => 'status',
+            'output_TransactionID' => 'transaction'
+        ];
+
+        var_dump($body);
+
+        $output = [];
+        foreach ($mapping as $k => $v) {
+            if (in_array($k, array_keys($body))) {
+                $output[$v] = $body[$k];
+            }
+        }
+
+        return $output;
+    }
+
+    private function detectErrorType($code) {
+        $mapping = [
+            'INS-0'     => ErrorType::SUCCESS,
+            'INS-1'     => ErrorType::INTERNAL_ERROR,
+            'INS-5'     => ErrorType::TRANSACTION_CANCELLED_BY_CUSTOMER,
+            'INS-6'     => ErrorType::TRANSACTION_FAILED,
+            'INS-9'     => ErrorType::REQUEST_TIMEOUT,
+            'INS-10'    => ErrorType::DUPLICATE_TRANSACTION,
+            'INS-13'    => ErrorType::INVALID_SHORT_CODE_USED,
+            'INS-14'    => ErrorType::INVALID_REFERENCE_USED,
+            'INS-15'    => ErrorType::INVALID_AMOUNT_USED,
+            'INS-16'    => ErrorType::SERVER_UNDER_OVERLOAD,
+            'INS-17'    => ErrorType::INVALID_TRANSACTION_REFERENCE,
+            'INS-18'    => ErrorType::INVALID_TRANSACTION,
+            'INS-19'    => ErrorType::INVALID_REFERENCE,
+            'INS-20'    => ErrorType::MISSING_PROPERTIES,
+            'INS-21'    => ErrorType::INVALID_PARAMETERS,
+            'INS-22'    => ErrorType::INVALID_OPERATION_TYPE,
+            'INS-23'    => ErrorType::UNKOWN_STATUS,
+            'INS-24'    => ErrorType::INVALID_INITIATOR_IDENTIFIER,
+            'INS-25'    => ErrorType::INVALID_SECURITY_CREDENTIAL,
+            'INS-993'   => ErrorType::DIRECT_DEBIT_MISSING,
+            'INS-994'   => ErrorType::DIRECT_DEBIT_ALREAD_EXISTS,
+            'INS-995'   => ErrorType::CUSTOMER_HAS_PROBLEMS,
+            'INS-996'   => ErrorType::CUSTOMER_ACCOUNT_NOT_ACTIVE,
+            'INS-997'   => ErrorType::UNKNOWN,
+            'INS-998'   => ErrorType::INVALID_MARKET,
+            'INS-2001'  => ErrorType::INITIATOR_AUTH_ERROR,
+            'INS-2002'  => ErrorType::RECEIVER_INVALID,
+            'INS-2006'  => ErrorType::INSUFICIENT_BALANCE,
+            'INS-2051'  => ErrorType::INVALID_MSISDN,
+            'INS-2057'  => ErrorType::LANGUAGE_CODE_INVALID,
+        ];
+
+        return $mapping[$code];
     }
 }

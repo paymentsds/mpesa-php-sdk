@@ -2,26 +2,20 @@
 
 namespace Paymentsds\MPesa;
 
-class Result {
+class Response {
     const PARAMS = [
         'success',
-        'code',
-        'description',
-        'headers',
+        'error',
         'data'
     ];
 
     private $success;
-    private $code;
-    private $description;
+    private $error;
     private $data;
 
-    public function __construct($success, $code, $headers, $description, $data) {
+    public function __construct($success, $error, $data) {
         $this->success = $success;
-        $this->code= $code;
-        $this->status = $status;
-        $this->headers = $headers;
-        $this->description = $description;
+        $this->error= $error;
         $this->data = $data;
     }
 
@@ -32,5 +26,4 @@ class Result {
         
         return null;
     }
-
 }

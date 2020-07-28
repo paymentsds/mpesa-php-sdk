@@ -24,7 +24,14 @@
             "src/Paymentsds/MPesa/Constants.php",
             "src/Paymentsds/MPesa/Configuration.php",
             "src/Paymentsds/MPesa/Service.php",
-            "src/Paymentsds/MPesa/Client.php"
+            "src/Paymentsds/MPesa/Client.php",
+            "src/Paymentsds/MPesa/ErrorType.php",
+            "src/Paymentsds/MPesa/Response.php",
+            "src/Paymentsds/MPesa/Exception/AuthenticationException.php",
+            "src/Paymentsds/MPesa/Exception/InvalidHostException.php",
+            "src/Paymentsds/MPesa/Exception/InvalidReceiverException.php",
+            "src/Paymentsds/MPesa/Exception/TimeoutException.php",
+            "src/Paymentsds/MPesa/Exception/ValidationException.php"
         ]
     }
 }
