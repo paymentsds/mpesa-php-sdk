@@ -140,7 +140,7 @@ class Service
                 foreach ([
                     'to' => 'serviceProviderCode',
                     'initiatorIdentifier' => 'initiatorIdentifier',
-                     'securityCredential'  => 'securityCredential'
+                    'securityCredential'  => 'securityCredential'
                 ] as $k => $v) {
                     if (!isset($intent[$k]) && isset($this->config->{$v})) {
                         $intent[$k] = $this->config->{$v};

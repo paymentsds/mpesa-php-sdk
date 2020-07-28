@@ -57,21 +57,19 @@ $client = new Client([
    'serviceProviderCode' => '<REPLACE>' // input_ServiceProviderCode
 ]);
 
-try {
-   $paymentData = [
-      'from' => '841234567',       // input_CustomerMSISDN
-      'reference' => '11114',      // input_ThirdPartyReference
-      'transaction' => 'T12344CC', // input_TransactionReference
-      'amount' => '10'             // input_Amount
-   ];
+$paymentData = [
+   'from' => '841234567',       // input_CustomerMSISDN
+   'reference' => '11114',      // input_ThirdPartyReference
+   'transaction' => 'T12344CC', // input_TransactionReference
+   'amount' => '10'             // input_Amount
+];
 
-   $result = $client.receive($paymentData);
+$result = $client.receive($paymentData);
 
-   if ($result.isSuccess()) {
-      var_dump($result);
-   }
-} catch ($e) {
-   var_dump($e);
+if ($result->success) {
+   // Handle success
+} else {
+   // Handle failure
 }
 ```
 
@@ -86,21 +84,19 @@ $client = new Client([
    'serviceProviderCode' => '<REPLACE>' // input_ServiceProviderCode
 ]);
 
-try {
-   $paymentData = [
-      'to' => '841234567',         // input_CustomerMSISDN
-      'reference' => '11114',      // input_ThirdPartyReference
-      'transaction' => 'T12344CC', // input_TransactionReference
-      'amount' => '10'             // input_Amount
-   ];
+$paymentData = [
+   'to' => '841234567',         // input_CustomerMSISDN
+   'reference' => '11114',      // input_ThirdPartyReference
+   'transaction' => 'T12344CC', // input_TransactionReference
+   'amount' => '10'             // input_Amount
+];
 
-   $result = $client.send($paymentData);
+$result = $client.send($paymentData);
 
-   if ($result.isSuccess()) {
-      var_dump($result);
-   }
-} catch ($e) {
-   var_dump($e);
+if ($result->success) {
+   // Handle success scenario
+} else {
+   // Handle failure scenario
 }
 ```
 
@@ -115,21 +111,19 @@ $client = new Client([
    'serviceProviderCode' => '<REPLACE>' // input_ServiceProviderCode
 ]);
 
-try {
-   $paymentData = [
-      'to' => '979797',         // input_ReceiverPartyCode
-      'reference' => '11114',      // input_ThirdPartyReference
-      'transaction' => 'T12344CC', // input_TransactionReference
-      'amount' => '10'             // input_Amount
-   ];
+$paymentData = [
+   'to' => '979797',         // input_ReceiverPartyCode
+   'reference' => '11114',      // input_ThirdPartyReference
+   'transaction' => 'T12344CC', // input_TransactionReference
+   'amount' => '10'             // input_Amount
+];
 
-   $result = $client.send($paymentData);
+$result = $client.send($paymentData);
 
-   if ($result.isSuccess()) {
-      var_dump($result);
-   }
-} catch ($e) {
-   var_dump($e);
+if ($result->success) {
+   // Handle success scenario
+} else {
+   // Handle failure scenario
 }
 ```
 
@@ -146,20 +140,18 @@ $client = new Client([
    'securityIdentifier' => '<REPLACE>'  // input_SecurityCredential
 ]);
 
-try {
-   $paymentData = [
-      'reference' => '11114',      // input_ThirdPartyReference
-      'transaction' => 'T12344CC', // input_TransactionReference
-      'amount' => '10'             // input_Amount
-   ];
+$paymentData = [
+   'reference' => '11114',      // input_ThirdPartyReference
+   'transaction' => 'T12344CC', // input_TransactionReference
+   'amount' => '10'             // input_Amount
+];
 
-   $result = $client.revert($paymentData);
+$result = $client.revert($paymentData);
 
-   if ($result.isSuccess()) {
-      var_dump($result);
-   }
-} catch ($e) {
-   var_dump($e);
+if ($result->success) {
+   // Handle success scenario
+} else {
+   // Handle failure scenario
 }
 ```
 
