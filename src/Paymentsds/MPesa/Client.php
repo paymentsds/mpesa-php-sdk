@@ -22,7 +22,7 @@ class Client
     
     public function revert($intent)
     {
-        return $this->service->handleRevert($inent);
+        return $this->service->handleRevert($intent);
     }
     
     public function query($intent)

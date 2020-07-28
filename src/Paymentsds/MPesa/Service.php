@@ -52,11 +52,12 @@ class Service
 
     public function handleRequest($opcode, $intent)
     {
-        try {
+        //try {
             $data = $this->fillOptionalProperties($opcode, $intent);
     
             $missingProperties = $this->detectMissingProperties($opcode, $data);
             if (count($missingProperties) > 0) {
+                var_dump($missingProperties);
                 throw new MissingPropertiesException('Missing properties');
             }
 
@@ -66,13 +67,13 @@ class Service
             }
 
             return $this->performRequest($opcode, $data);
-        } catch (MissingPropertiesException $e) {
+        //} catch (MissingPropertiesException $e) {
 
-        } catch (ValidationException $e) {
+        //} catch (ValidationException $e) {
 
-        } catch (TimeoutException $e) {
+        //} catch (TimeoutException $e) {
 
-        }
+        //}
 
     }
 
@@ -137,6 +138,7 @@ class Service
 
             case Constants::REVERSAL:
                 foreach ([
+                    'to' => 'serviceProviderCode',
                     'initiatorIdentifier' => 'initiatorIdentifier',
                      'securityCredential'  => 'securityCredential'
                 ] as $k => $v) {
@@ -200,10 +202,10 @@ class Service
                     'debug' => true
                 ];
                 
-                if ($operation['method'] == 'post') {
-                    $data['json'] = $body;
-                } else {
+                if ($operation['method'] == 'get') {
                     $data['query'] = $body;
+                } else {
+                    $data['json'] = $body;
                 }
                 
                 $httpClient = new \GuzzleHttp\Client([

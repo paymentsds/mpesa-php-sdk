@@ -17,6 +17,7 @@ class Constants
 
     const POST = 'post';
     const GET = 'get';
+    const PUT = 'put';
 
     const OPERATIONS = [
         self::C2B_PAYMENT => [
@@ -110,7 +111,7 @@ class Constants
         ],
 
         self::REVERSAL => [
-            'method' => self::POST,
+            'method' => self::PUT,
             'port'   => self::REVERSAL_PORT,
             'path'   => '/ipg/v1x/reversal/',
             'mapping' => [
@@ -118,29 +119,29 @@ class Constants
                 'amount' => 'input_ReversalAmount',
                 'reference' => 'input_ThirdPartyReference',
                 'transaction' => 'input_TransactionID',
-                'security_credential' => 'security_credential',
-                'initiator_identifier' => 'initiator_identifier'
+                'securityCredential' => 'input_SecurityCredential',
+                'initiatorIdentifier' => 'input_InitiatorIdentifier'
             ],
             'validation' => [
                 'to' => self::PATTERNS['SERVICE_PROVIDER_CODE'],
                 'amount' => self::PATTERNS['MONEY_AMOUNT'],
                 'reference' => self::PATTERNS['WORD'],
                 'transaction' => self::PATTERNS['WORD'],
-                'security_credential' => self::PATTERNS['WORD'],
-                'initiator_identifier' => self::PATTERNS['WORD']
+                'securityCredential' => self::PATTERNS['WORD'],
+                'initiatorIdentifier' => self::PATTERNS['WORD']
             ],
             'required' => [
                 'to',
                 'amount',
                 'reference',
                 'transaction',
-                'security_credential',
-                'initiator_identifier'
+                'securityCredential',
+                'initiatorIdentifier'
             ],
             'optional' => [
                 'to',
-                'security_credential',
-                'initiator_identifier'
+                'securityCredential',
+                'initiatorIdentifier'
             ]
         ],
 
