@@ -9,7 +9,7 @@ class Constants
     const REVERSAL = 'REVERSAL';
     const QUERY_TRANSACTION_STATUS = 'QUERY_TRANSACTION_STATUS';
 
-    const C2B_PAYMENT_PORT = '18345';
+    const C2B_PAYMENT_PORT = '18352';
     const B2B_PAYMENT_PORT = '18349';
     const B2C_PAYMENT_PORT = '18345';
     const REVERSAL_PORT = '18354';
@@ -22,20 +22,21 @@ class Constants
         self::C2B_PAYMENT => [
             'method' => self::POST,
             'port'   => self::C2B_PAYMENT_PORT,
-            'path'   => '/ipg/v1x/b2cPayment/',
+            'path'   => '/ipg/v1x/c2bPayment/singleStage/',
             'mapping' => [
-                'to' => self::PATTERNS['SERVICE_PROVIDER_CODE'],
-                'from' => self::PATTERNS['PHONE_NUMBER'],
-                'amount' => self::PATTERNS['MONEY_AMOUNT'],
-                'reference' => self::PATTERNS['WORD'],
-                'transaction' => self::PATTERNS['WORD'],
-            ],
-            'validation' => [
                 'to' => 'input_ServiceProviderCode',
                 'from' => 'input_CustomerMSISDN',
                 'amount' => 'input_Amount',
                 'reference' => 'input_ThirdPartyReference',
                 'transaction' => 'input_TransactionReference',
+
+            ],
+            'validation' => [
+                'to' => self::PATTERNS['SERVICE_PROVIDER_CODE'],
+                'from' => self::PATTERNS['PHONE_NUMBER'],
+                'amount' => self::PATTERNS['MONEY_AMOUNT'],
+                'reference' => self::PATTERNS['WORD'],
+                'transaction' => self::PATTERNS['WORD'],
             ],
             'required' => [
                 'from',
@@ -53,18 +54,18 @@ class Constants
             'port'   => self::B2B_PAYMENT_PORT,
             'path'   => '/ipg/v1x/b2bPayment/',
             'mapping' => [
-                'to' => self::PATTERNS['SERVICE_PROVIDER_CODE'],
-                'from' => self::PATTERNS['SERVICE_PROVIDER_CODE'],
-                'amount' => self::PATTERNS['MONEY_AMOUNT'],
-                'reference' => self::PATTERNS['WORD'],
-                'transaction' => self::PATTERNS['WORD'],
-            ],
-            'validation' => [
                 'to' => 'input_ReceiverPartyCode',
                 'from' => 'input_PrimaryPartyCode',
                 'amount' => 'input_Amount',
                 'reference' => 'input_ThirdPartyReference',
                 'transaction' => 'input_TransactionReference',
+            ],
+            'validation' => [
+                'to' => self::PATTERNS['SERVICE_PROVIDER_CODE'],
+                'from' => self::PATTERNS['SERVICE_PROVIDER_CODE'],
+                'amount' => self::PATTERNS['MONEY_AMOUNT'],
+                'reference' => self::PATTERNS['WORD'],
+                'transaction' => self::PATTERNS['WORD'],
             ],
             'required' => [
                 'to',
@@ -149,18 +150,17 @@ class Constants
             'path'   => '/ipg/v1x/queryTransactionStatus/',
             'mapping' => [
                 'from' => 'input_ServiceProviderCode',
-                'query' => 'input_QueryReference',
+                'subject' => 'input_QueryReference',
                 'reference' => 'input_ThirdPartyReference'
             ],
             'validation' => [
                 'from' => self::PATTERNS['SERVICE_PROVIDER_CODE'],
-                'amount' => self::PATTERNS['MONEY_AMOUNT'],
+                'subject' => self::PATTERNS['WORD'],
                 'reference' => self::PATTERNS['WORD'],
-                'transaction' => self::PATTERNS['WORD'],
             ],
             'required' => [
                 'from',
-                'amount',
+                'subject',
                 'reference'
             ],
             'optional' => [

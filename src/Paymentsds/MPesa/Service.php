@@ -9,6 +9,8 @@ use Paymentsds\MPesa\Exception\AuthenticationExcception;
 use Paymentsds\MPesa\Exception\InvalidHostException;
 use Paymentsds\MPesa\Exception\MissingPropertiesException;
 use Paymentsds\MPesa\Exception\TimeoutException;
+use Paymentsds\MPesa\Exception\ValidationException;
+use Paymentsds\MPesa\Exception\InvalidReceiverException;
 use Paymentsds\MPesa\ErrorType;
 use Paymentsds\MPesa\Response;
 
@@ -35,17 +37,17 @@ class Service
 
     public function handleReceive($intent)
     {
-        return handleRequest(Constants::C2B_PAYMENT, $intent);
+        return $this->handleRequest(Constants::C2B_PAYMENT, $intent);
     }
 
-    public function handleQuery($inent)
+    public function handleQuery($intent)
     {
-        return handleRequest(Constants::QUERY_TRANSACTION_STATUS, $intent);
+        return $this->handleRequest(Constants::QUERY_TRANSACTION_STATUS, $intent);
     }
 
     public function handleRevert($intent)
     {
-        return handleRequest(Constants::REVERSAL, $intent);
+        return $this->handleRequest(Constants::REVERSAL, $intent);
     }
 
     public function handleRequest($opcode, $intent)
@@ -117,7 +119,6 @@ class Service
     {
         switch ($opcode) {
             case Constants::C2B_PAYMENT:
-            case Constants::B2B_PAYMENT:
                 foreach (['to' => 'serviceProviderCode'] as $k => $v) {
                     if (!isset($intent[$k]) && isset($this->config->{$v})) {
                         $intent[$k] = $this->config->{$v};
@@ -126,6 +127,7 @@ class Service
                 break;
                 
             case Constants::B2C_PAYMENT:
+            case Constants::B2B_PAYMENT:
                 foreach (['from' => 'serviceProviderCode'] as $k => $v) {
                     if (!isset($intent[$k]) && isset($this->config->{$v})) {
                         $intent[$k] = $this->config->{$v};
@@ -145,7 +147,7 @@ class Service
                 break;
 
             case Constants::QUERY_TRANSACTION_STATUS:
-                foreach (['to' => 'serviceProviderCode'] as $k => $v) {
+                foreach (['from' => 'serviceProviderCode'] as $k => $v) {
                     if (!isset($intent[$k]) && isset($this->config->{$v})) {
                         $intent[$k] = $this->config->{$v};
                     }
@@ -245,14 +247,12 @@ class Service
 
         $mapping = [
             'output_ConversationID' => 'conversation',
-            'output_ResponseDesc' => 'code',
-            'output_ResponseCode' => 'description',
+            'output_ResponseCode' => 'code',
+            'output_ResponseDesc' => 'description',
             'output_ThirdPartyReference' => 'reference',
             'output_ResponseTransactionStatus' => 'status',
             'output_TransactionID' => 'transaction'
         ];
-
-        var_dump($body);
 
         $output = [];
         foreach ($mapping as $k => $v) {
