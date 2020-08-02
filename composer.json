@@ -7,12 +7,20 @@
         {
             "name": "Edson Michaque",
             "email": "edson@michaque.com"
+        },
+        {
+            "name": "Elton Laice",
+            "email": "me@eltonlaice.com"
         }
     ],
     "minimum-stability": "dev",
     "require": {
 	    "php": ">= 7.2",
-        "guzzlehttp/guzzle": "^7.1@dev"
+        "guzzlehttp/guzzle": "^7.1@dev",
+        "vlucas/phpdotenv": "^5.1@dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "6.*"
     },
     "autoload": {
             "psr-4": {
