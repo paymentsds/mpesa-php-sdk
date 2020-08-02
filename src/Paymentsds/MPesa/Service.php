@@ -57,7 +57,6 @@ class Service
     
             $missingProperties = $this->detectMissingProperties($opcode, $data);
             if (count($missingProperties) > 0) {
-                var_dump($missingProperties);
                 throw new MissingPropertiesException('Missing properties');
             }
 
