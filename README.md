@@ -230,22 +230,6 @@ composer install
 - [M-Pesa SDK for Ruby](https://github.com/paymentsds/mpesa-ruby-sdk)
 - [M-Pesa SDK for Python](https://github.com/paymentsds/mpesa-python-sdk)
 
-### Alternatives <a name="related-projects/alternatives"></a>
-
-- [Alternative 1](https://github.com/<username>/<project>)
-- [Alternative 2](https://github.com/<username>/<project>)
-- [Alternative 3](https://github.com/<username>/<project>)
-- [Alternative 4](https://github.com/<username>/<project>)
-
-
-### Inspiration
-
-- [rosariopfernandes/mpesa-node-api](https://github.com/abdulmueid/mpesa-php-api)
-- [karson/mpesa-php-sdk](https://github.com/karson/mpesa-php-sdk)
-- [codeonweekends/mpesa-php-sdk](https://github.com/codeonweekends/mpesa-php-sdk)
-- [abdulmueid/mpesa-php-api](https://github.com/abdulmueid/mpesa-php-api)
-- [realdm/mpesasdk](https://github.com/realdm/mpesasdk)
-
 
 ## Contributing <a name="contributing"></a>
 
@@ -253,10 +237,14 @@ composer install
 
 ## Authors <a name="authors"></a>
 
+- [Anísio Mandlate](https://github.com/AnisioMandlate)
 - [Edson Michaque](https://github.com/edsonmichaque)
+- [Elton Laice](https://github.com/eltonlaice)
 - [Nélio Macombo](https://github.com/neliomacombo)
 
 ## Credits <a name="credits"></a>
+
+- [All Contributors](../../contributors)
 
 ## License <a name="license"></a>
 
