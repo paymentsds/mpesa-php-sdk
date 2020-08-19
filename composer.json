@@ -1,5 +1,5 @@
 {
-    "name": "paymentsds/mpesa-ink",
+    "name": "paymentsds/mpesa",
     "description": "PHP client library for MPesa API",
     "type": "library",
     "license": "Apache-2.0",
