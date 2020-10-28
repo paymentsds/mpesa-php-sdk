@@ -5,7 +5,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 
 use Paymentsds\MPesa\Configuration;
-use Paymentsds\MPesa\Exception\AuthenticationExcception;
+use Paymentsds\MPesa\Exception\AuthenticationException;
 use Paymentsds\MPesa\Exception\InvalidHostException;
 use Paymentsds\MPesa\Exception\MissingPropertiesException;
 use Paymentsds\MPesa\Exception\TimeoutException;
