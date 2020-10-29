@@ -210,6 +210,7 @@ class Service
                 $httpClient = new \GuzzleHttp\Client([
                     'base_uri' => $baseURL,
                     'timeout'  => $this->config->timeout,
+                    'verify' => $this->config->verifySSL,
                 ]);
                 
                 try {
