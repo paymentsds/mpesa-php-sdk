@@ -198,7 +198,8 @@ class Service
                 
                 $data = [
                     'headers' => $headers,
-                    'debug' => true
+                    'debug' => true,
+                    'verify' => $this->config->verifySSL
                 ];
                 
                 if ($operation['method'] == 'get') {
@@ -210,7 +211,6 @@ class Service
                 $httpClient = new \GuzzleHttp\Client([
                     'base_uri' => $baseURL,
                     'timeout'  => $this->config->timeout,
-                    'verify' => $this->config->verifySSL,
                 ]);
                 
                 try {
