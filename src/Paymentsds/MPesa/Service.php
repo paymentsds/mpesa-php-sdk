@@ -52,28 +52,19 @@ class Service
 
     public function handleRequest($opcode, $intent)
     {
-        //try {
-            $data = $this->fillOptionalProperties($opcode, $intent);
-    
-            $missingProperties = $this->detectMissingProperties($opcode, $data);
-            if (count($missingProperties) > 0) {
-                throw new MissingPropertiesException('Missing properties');
-            }
+        $data = $this->fillOptionalProperties($opcode, $intent);
 
-            $validationErrors = $this->detectErrors($opcode, $data);
-            if (count($validationErrors) > 0) {
-                throw new ValidationException('Validation errors');
-            }
+        $missingProperties = $this->detectMissingProperties($opcode, $data);
+        if (count($missingProperties) > 0) {
+            throw new MissingPropertiesException('Missing properties');
+        }
 
-            return $this->performRequest($opcode, $data);
-        //} catch (MissingPropertiesException $e) {
+        $validationErrors = $this->detectErrors($opcode, $data);
+        if (count($validationErrors) > 0) {
+            throw new ValidationException('Validation errors');
+        }
 
-        //} catch (ValidationException $e) {
-
-        //} catch (TimeoutException $e) {
-
-        //}
-
+        return $this->performRequest($opcode, $data);
     }
 
     private function detectOperation($intent)
