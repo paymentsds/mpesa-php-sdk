@@ -62,7 +62,7 @@ $paymentData = [
    'amount' => '10'             // input_Amount
 ];
 
-$result = $client.receive($paymentData);
+$result = $client->receive($paymentData);
 
 if ($result->success) {
    // Handle success
@@ -89,7 +89,7 @@ $paymentData = [
    'amount' => '10'             // input_Amount
 ];
 
-$result = $client.send($paymentData);
+$result = $client->send($paymentData);
 
 if ($result->success) {
    // Handle success scenario
@@ -116,7 +116,7 @@ $paymentData = [
    'amount' => '10'             // input_Amount
 ];
 
-$result = $client.send($paymentData);
+$result = $client->send($paymentData);
 
 if ($result->success) {
    // Handle success scenario
@@ -144,7 +144,7 @@ $paymentData = [
    'amount' => '10'             // input_Amount
 ];
 
-$result = $client.revert($paymentData);
+$result = $client->revert($paymentData);
 
 if ($result->success) {
    // Handle success scenario
@@ -169,7 +169,7 @@ $paymentData = [
    'reference' => 'T12344CC', // input_ThirdPartyReference
 ];
 
-$result = $client.query($paymentData);
+$result = $client->query($paymentData);
 
 if ($result->success) {
    // Handle success scenario
