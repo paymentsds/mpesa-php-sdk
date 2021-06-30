@@ -189,7 +189,7 @@ class Service
                 
                 $data = [
                     'headers' => $headers,
-                    'debug' => true,
+                    'debug' => $this->config->debugging,
                     'verify' => $this->config->verifySSL
                 ];
                 

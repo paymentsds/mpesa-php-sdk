@@ -23,7 +23,7 @@ class Configuration
     public function __construct(array $args)
     {
         $this->environment = Environment::fromURL(Environment::SANDBOX);
-        $this->debugging = true;
+        $this->debugging = false;
         $this->verifySSL = false;
         $this->origin = '*';
         $this->userAgent = 'MPesa-PHP';
