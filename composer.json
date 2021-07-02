@@ -17,7 +17,7 @@
             "email": "karson@turbohost.co.mz"
         }
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "alpha",
     "require": {
 	    "php": ">= 7.2",
         "guzzlehttp/guzzle": "7.*"
