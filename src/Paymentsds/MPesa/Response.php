@@ -2,7 +2,8 @@
 
 namespace Paymentsds\MPesa;
 
-class Response {
+class Response
+{
     const PARAMS = [
         'success',
         'error',
@@ -13,13 +14,15 @@ class Response {
     private $error;
     private $data;
 
-    public function __construct($success, $error, $data) {
+    public function __construct($success, $error, $data = null)
+    {
         $this->success = $success;
         $this->error= $error;
         $this->data = $data;
     }
 
-    public function __get($property) {
+    public function __get($property)
+    {
         if (in_array($property, self::PARAMS)) {
             return $this->{$property};
         }

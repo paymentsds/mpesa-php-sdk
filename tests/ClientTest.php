@@ -5,9 +5,9 @@ use Paymentsds\MPesa\Client;
 use PHPUnit\Framework\TestCase;
 use Dotenv\Dotenv;
 
-class ClientTest extends TestCase{
-
-    public function setUp()
+class ClientTest extends TestCase
+{
+    public function setup():void
     {
         $dotenv = Dotenv::createImmutable(__DIR__);
         $dotenv->load();
@@ -18,7 +18,7 @@ class ClientTest extends TestCase{
             'serviceProviderCode' => $_ENV['SERVICE_PROVIDER_CODE']     // input_ServiceProviderCode
          ]);
 
-         $this->clientRevert = new Client([
+        $this->clientRevert = new Client([
             'apiKey' => $_ENV['API_KEY'],                               // API Key
             'publicKey' => $_ENV['PUBLIC_KEY'],                         // Public Key
             'serviceProviderCode' => $_ENV['SERVICE_PROVIDER_CODE'],    // input_ServiceProviderCode
@@ -26,43 +26,43 @@ class ClientTest extends TestCase{
             'securityCredential' => $_ENV['SECURITY_CREDENTIAL']        // input_SecurityCredential
          ]);
          
-         $this->paymentDataSend = [
+        $this->paymentDataSend = [
             'to' => $_ENV['PHONE_NUMBER'],                              // input_CustomerMSISDN
             'reference' => '11115' . rand(1, 99),                       // input_ThirdPartyReference
             'transaction' => 'T12344CC',                                // input_TransactionReference
             'amount' => '10'                                            // input_Amount
          ];
 
-         $this->paymentDataReceive = [
+        $this->paymentDataReceive = [
             'from' => $_ENV['PHONE_NUMBER'],                                   // input_CustomerMSISDN
             'reference' => '11114'  . rand(1, 99),                      // input_ThirdPartyReference
             'transaction' => 'T12344CC',                                // input_TransactionReference
             'amount' => '10'                                            // input_Amount
          ];
 
-         $this->paymentDataBusiness = [
+        $this->paymentDataBusiness = [
             'to' => '979797',                                           // input_ReceiverPartyCode
             'reference' => '11114'   . rand(1, 99),                     // input_ThirdPartyReference
             'transaction' => 'T12344CC',                                // input_TransactionReference
             'amount' => '10'                                            // input_Amount
          ];
 
-         $this->paymentDataRevert = [
+        $this->paymentDataRevert = [
             'reference' => '11114' . rand(1, 99),                       // input_ThirdPartyReference
             'transaction' => 'T12344CC',                                // input_TransactionReference
             'amount' => '10'                                            // input_Amount
          ];
     }
     public function testSend()
-    {    
-         $result = $this->client->send($this->paymentDataSend);
-         $this->assertTrue($result->success);
+    {
+        $result = $this->client->send($this->paymentDataSend);
+        $this->assertTrue($result->success);
     }
 
     public function testSendBusiness()
-    {    
-         $result = $this->client->send($this->paymentDataBusiness);
-         $this->assertTrue($result->success);
+    {
+        $result = $this->client->send($this->paymentDataBusiness);
+        $this->assertTrue($result->success);
     }
 
     public function testReceive()

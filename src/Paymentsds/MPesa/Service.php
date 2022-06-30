@@ -1,18 +1,19 @@
 <?php
 namespace Paymentsds\MPesa;
 
+use GuzzleHttp\Client;
+use Paymentsds\MPesa\Response;
+
+use Paymentsds\MPesa\ErrorType;
+use Paymentsds\MPesa\Configuration;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
-
-use Paymentsds\MPesa\Configuration;
-use Paymentsds\MPesa\Exception\AuthenticationException;
-use Paymentsds\MPesa\Exception\InvalidHostException;
-use Paymentsds\MPesa\Exception\MissingPropertiesException;
 use Paymentsds\MPesa\Exception\TimeoutException;
 use Paymentsds\MPesa\Exception\ValidationException;
+use Paymentsds\MPesa\Exception\InvalidHostException;
+use Paymentsds\MPesa\Exception\AuthenticationException;
 use Paymentsds\MPesa\Exception\InvalidReceiverException;
-use Paymentsds\MPesa\ErrorType;
-use Paymentsds\MPesa\Response;
+use Paymentsds\MPesa\Exception\MissingPropertiesException;
 
 class Service
 {
@@ -25,11 +26,11 @@ class Service
     }
 
     public function handleSend($intent)
-    {   
+    {
         try {
             $opcode = $this->detectOperation($intent);
 
-            return $this->handleRequest($opcode, $intent);    
+            return $this->handleRequest($opcode, $intent);
         } catch (InvalidReceiverException $e) {
             return new Response(false, ErrorType::INVALID_RECEIVER);
         }
@@ -199,29 +200,32 @@ class Service
                     $data['json'] = $body;
                 }
                 
-                $httpClient = new \GuzzleHttp\Client([
+                $httpClient = new Client([
                     'base_uri' => $baseURL,
                     'timeout'  => $this->config->timeout,
                 ]);
                 
+                
                 try {
                     $response = $httpClient->request(strtoupper($operation['method']), $operation['path'], $data);
                     $body = json_decode($response->getBody()->getContents(), true);
-
-                    
                     return new Response(true, null, $this->buildResponse($body));
                 } catch (ConnectionException $e) {
- 
-                } catch (ClientException | ServerException $e)  {
+                } catch (ClientException | ServerException $e) {
                     $response = $e->getResponse();
                     $body = json_decode($response->getBody()->getContents(), true);
-
-                    $errorType = $this->detectErrorType($body['output_ResponseCode']);
+                    if (isset($body['output_error'])) {
+                        $errorType = ErrorType::UNAUTHORIZED_API_OR_SESSION;
+                    } elseif (isset($body['output_ResponseCode'])) {
+                        $errorType = $this->detectErrorType($body['output_ResponseCode']);
+                    } else {
+                        $errorType = ErrorType::UNKNOWN;
+                    }
 
                     return new Response(false, $errorType, $this->buildResponse($body));
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     return new Response(false, null, null);
-                }      
+                }
             } else {
                 throw new AuthenticationException('No auth data');
             }
@@ -237,7 +241,6 @@ class Service
 
     private function buildResponse($body)
     {
-
         $mapping = [
             'output_ConversationID' => 'conversation',
             'output_ResponseCode' => 'code',
@@ -257,7 +260,8 @@ class Service
         return $output;
     }
 
-    private function detectErrorType($code) {
+    private function detectErrorType($code)
+    {
         $mapping = [
             'INS-0'     => ErrorType::SUCCESS,
             'INS-1'     => ErrorType::INTERNAL_ERROR,

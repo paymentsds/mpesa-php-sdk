@@ -2,7 +2,8 @@
 
 namespace Paymentsds\MPesa;
 
-class ErrorType {
+class ErrorType
+{
     const SUCCESS = 'SUCCESS';
     const INTERNAL_ERROR = 'INTERNAL_ERROR';
     const TRANSACTION_CANCELLED_BY_CUSTOMER = 'TRANSACTION_CANCELLED_BY_CUSTOMER';
@@ -37,4 +38,5 @@ class ErrorType {
     
     const INVALID_INPUT = 'INVALID_INPUT';
     const MISSING_INPUT = 'MISSING_INPUT';
+    const UNAUTHORIZED_API_OR_SESSION = 'UNAUTHORIZED_API_OR_SESSION';
 }
