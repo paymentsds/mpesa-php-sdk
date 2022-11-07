@@ -9,7 +9,7 @@ class Environment
     ];
     
     const SANDBOX    = 'https://api.sandbox.vm.co.mz';
-    const PRODUCTION = 'https://api.mpesa.vm.co.mz';
+    const PRODUCTION = 'https://api.vm.co.mz';
     
     private $scheme;
     private $domain;
