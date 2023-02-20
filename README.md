@@ -66,11 +66,13 @@ Using this SDK is very simple and fast, let us see some examples:
 
 ```php
 use Paymentsds\MPesa\Client;
+use Paymentsds\MPesa\Environment;
 
 $client = new Client([
    'apiKey' => '<REPLACE>',             // API Key
    'publicKey' => '<REPLACE>',          // Public Key
    'serviceProviderCode' => '<REPLACE>' // Service Provider Code
+   'environment' =>  Environment::SANDBOX // Environment. Use Environment::PRODUCTION  for production
 ]);
 
 $paymentData = [
