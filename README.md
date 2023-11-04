@@ -194,7 +194,7 @@ $client = new Client([
 
 $paymentData = [
    'subject' => '11114',      // Query Reference
-   'transaction' => 'T12344CC', // Transaction Reference
+   'reference' => 'T12344CC', // Transaction Reference
 ];
 
 $result = $client->query($paymentData);
