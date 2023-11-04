@@ -76,7 +76,7 @@ $client = new Client([
 ]);
 
 $paymentData = [
-   'from' => '841234567',       // Customer MSISDN
+   'from' => '258841234567',       // Customer MSISDN
    'reference' => '11114',      // Third Party Reference
    'transaction' => 'T12344CC', // Transaction Reference
    'amount' => '10'             // Amount
@@ -105,7 +105,7 @@ $client = new Client([
 ]);
 
 $paymentData = [
-   'to' => '841234567',       // Customer MSISDN
+   'to' => '258841234567',       // Customer MSISDN
    'reference' => '11114',      // Third Party Reference
    'transaction' => 'T12344CC', // Transaction Reference
    'amount' => '10'             // Amount
