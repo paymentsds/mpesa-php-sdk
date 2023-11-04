@@ -1,4 +1,5 @@
 <?php
+
 namespace Paymentsds\MPesa;
 
 class Constants
@@ -8,12 +9,14 @@ class Constants
     const B2C_PAYMENT = 'B2C_PAYMENT';
     const REVERSAL = 'REVERSAL';
     const QUERY_TRANSACTION_STATUS = 'QUERY_TRANSACTION_STATUS';
+    const QUERY_CUSTOMER_MASKED_NAME = 'QUERY_CUSTOMER_MASKED_NAME';
 
     const C2B_PAYMENT_PORT = '18352';
     const B2B_PAYMENT_PORT = '18349';
     const B2C_PAYMENT_PORT = '18345';
     const REVERSAL_PORT = '18354';
     const QUERY_TRANSACTION_STATUS_PORT = '18353';
+    const QUERY_CUSTOMER_MASKED_NAME_PORT = '19323';
 
     const POST = 'post';
     const GET = 'get';
@@ -166,6 +169,30 @@ class Constants
             ],
             'optional' => [
                 'from'
+            ]
+        ],
+
+        self::QUERY_CUSTOMER_MASKED_NAME => [
+            'method' => self::GET,
+            'port'   => self::QUERY_CUSTOMER_MASKED_NAME_PORT,
+            'path'   => '/ipg/v1x/queryCustomerName/',
+            'mapping' => [
+                'to' => 'input_ServiceProviderCode',
+                'from' => 'input_CustomerMSISDN',
+                'reference' => 'input_ThirdPartyReference',
+            ],
+            'validation' => [
+                'to' => self::PATTERNS['SERVICE_PROVIDER_CODE'],
+                'from' => self::PATTERNS['PHONE_NUMBER'],
+                'reference' => self::PATTERNS['WORD'],
+            ],
+            'required' => [
+                'to',
+                'from',
+                'reference'
+            ],
+            'optional' => [
+                'to'
             ]
         ]
     ];
