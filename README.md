@@ -1,6 +1,7 @@
 # PHP M-Pesa SDK
 
 
+
 <p align="center">
 <a href="https://github.com/paymentsds/mpesa-php-sdk"><img src="https://img.shields.io/packagist/dt/paymentsds/mpesa" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/paymentsds/mpesa"><img src="https://img.shields.io/github/v/release/paymentsds/mpesa-php-sdk?include_prereleases" alt="Latest Stable Version"></a>
@@ -67,6 +68,7 @@ Using this SDK is very simple and fast, let us see some examples:
 ```php
 use Paymentsds\MPesa\Client;
 use Paymentsds\MPesa\Environment;
+require '..\vendor\autoload.php';
 
 $client = new Client([
    'apiKey' => '<REPLACE>',             // API Key
