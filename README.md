@@ -205,6 +205,32 @@ if ($result->success) {
 }
 ```
 
+#### Query the customer obfuscated name
+
+```php
+use Paymentsds\MPesa\Client;
+
+$client = new Client([
+   'apiKey' => '<REPLACE>',             // API Key
+   'publicKey' => '<REPLACE>',          // Public Key
+   'serviceProviderCode' => '<REPLACE>' // Service Provider Code
+]);
+
+$paymentData = [
+    'from' => '258843330333', // Customer MSISDN
+    'to' => '171717', // Service Provider Code
+    'reference' => '11114', // Third Party Reference
+];
+
+$result = $client->masked_name($paymentData);
+
+if ($result->success) {
+   // Handle success scenario
+} else {
+   // Handle failure scenario
+}
+```
+
 <br><br>
 
 ## Friends

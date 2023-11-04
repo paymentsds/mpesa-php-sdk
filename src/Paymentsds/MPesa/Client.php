@@ -29,4 +29,8 @@ class Client
     {
         return $this->service->handleQuery($intent);
     }
+
+    public function masked_name($intent) {
+        return $this->service->handleMaskedName($intent);
+    }
 }

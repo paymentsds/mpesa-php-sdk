@@ -1,4 +1,5 @@
 <?php
+
 namespace Paymentsds\MPesa;
 
 use GuzzleHttp\Client;
@@ -46,6 +47,11 @@ class Service
         return $this->handleRequest(Constants::QUERY_TRANSACTION_STATUS, $intent);
     }
 
+    public function handleMaskedName($intent)
+    {
+        return $this->handleRequest(Constants::QUERY_CUSTOMER_MASKED_NAME, $intent);
+    }
+
     public function handleRevert($intent)
     {
         return $this->handleRequest(Constants::REVERSAL, $intent);
@@ -74,7 +80,7 @@ class Service
             if (preg_match(Constants::PATTERNS['PHONE_NUMBER'], $intent['to'])) {
                 return Constants::B2C_PAYMENT;
             }
-            
+
             if (preg_match(Constants::PATTERNS['SERVICE_PROVIDER_CODE'], $intent['to'])) {
                 return Constants::B2B_PAYMENT;
             }
@@ -86,24 +92,24 @@ class Service
     private function detectMissingProperties($opcode, $intent)
     {
         $operation = Constants::OPERATIONS[$opcode];
-        
+
         $requires = $operation['required'];
         $missing = array_filter($requires, function ($v, $k) use ($intent) {
             return !(isset($intent[$v]));
         }, ARRAY_FILTER_USE_BOTH);
-        
+
         return $missing;
     }
 
     private function detectErrors($opcode, $intent)
     {
         $operation = Constants::OPERATIONS[$opcode];
-                
+
         $requires = $operation['required'];
         $errors = array_filter($requires, function ($v, $k) use ($intent, $operation) {
             return !preg_match($operation['validation'][$v], $intent[$v]);
         }, ARRAY_FILTER_USE_BOTH);
-        
+
         return $errors;
     }
 
@@ -117,7 +123,7 @@ class Service
                     }
                 }
                 break;
-                
+
             case Constants::B2C_PAYMENT:
             case Constants::B2B_PAYMENT:
                 foreach (['from' => 'serviceProviderCode'] as $k => $v) {
@@ -146,6 +152,13 @@ class Service
                     }
                 }
                 break;
+            case Constants::QUERY_TRANSACTION_STATUS:
+                foreach (['to' => 'serviceProviderCode'] as $k => $v) {
+                    if (!isset($intent[$k]) && isset($this->config->{$v})) {
+                        $intent[$k] = $this->config->{$v};
+                    }
+                }
+                break;
         }
 
         return $intent;
@@ -155,7 +168,7 @@ class Service
     {
         $operation = Constants::OPERATIONS[$opcode];
         $body = [];
-        
+
         foreach ($intent as $oldKey => $value) {
             $newKey = $operation['mapping'][$oldKey];
             $body[$newKey] = $value;
@@ -172,40 +185,40 @@ class Service
             'Content-Type' => "application/json",
             'Authorization' => sprintf("Bearer %s", $this->config->auth)
         ];
-        
+
         return $headers;
     }
 
     private function performRequest($opcode, $intent)
     {
         $this->generateAccessToken();
-        
+
         if (isset($this->config->environment)) {
             if (isset($this->config->auth)) {
                 $operation = Constants::OPERATIONS[$opcode];
                 $headers = $this->buildRequestHeaders($opcode, $intent);
                 $body = $this->buildRequestBody($opcode, $intent);
-                                
+
                 $baseURL = sprintf("%s://%s:%s", $this->config->environment->scheme, $this->config->environment->domain, $operation['port']);
-                
+
                 $data = [
                     'headers' => $headers,
                     'debug' => $this->config->debugging,
                     'verify' => $this->config->verifySSL
                 ];
-                
+
                 if ($operation['method'] == 'get') {
                     $data['query'] = $body;
                 } else {
                     $data['json'] = $body;
                 }
-                
+
                 $httpClient = new Client([
                     'base_uri' => $baseURL,
                     'timeout'  => $this->config->timeout,
                 ]);
-                
-                
+
+
                 try {
                     $response = $httpClient->request(strtoupper($operation['method']), $operation['path'], $data);
                     $body = json_decode($response->getBody()->getContents(), true);
@@ -282,6 +295,7 @@ class Service
             'INS-23'    => ErrorType::UNKOWN_STATUS,
             'INS-24'    => ErrorType::INVALID_INITIATOR_IDENTIFIER,
             'INS-25'    => ErrorType::INVALID_SECURITY_CREDENTIAL,
+            'INS-26'    => ErrorType::NOT_AUTHORIZED,
             'INS-993'   => ErrorType::DIRECT_DEBIT_MISSING,
             'INS-994'   => ErrorType::DIRECT_DEBIT_ALREAD_EXISTS,
             'INS-995'   => ErrorType::CUSTOMER_HAS_PROBLEMS,
