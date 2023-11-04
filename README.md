@@ -125,6 +125,7 @@ if ($result->success) {
 #### B2B Transaction (Sending money to business account)
 
 ```php
+use Paymentsds\MPesa\Client;
 $client = new Client([
    'apiKey' => '<REPLACE>',             // API Key
    'publicKey' => '<REPLACE>',          // Public Key
@@ -132,7 +133,7 @@ $client = new Client([
 ]);
 
 $paymentData = [
-   'from' => '979797',       // Receiver Party Code
+   'to' => '979797',       // Receiver Party Code
    'reference' => '11114',      // Third Party Reference
    'transaction' => 'T12344CC', // Transaction Reference
    'amount' => '10'             // Amount
